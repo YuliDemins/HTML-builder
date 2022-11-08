@@ -18,6 +18,7 @@ fs.readFile (path.join(__dirname, 'template.html'), 'utf-8', (err, data) => {
 
 fs.readdir(path.join(__dirname, 'components'), (err, files) => {
   if (err) throw err;
+  let fileCount = files.length
   for (const file of files) {
     let component = ''
     const name = path.parse(file).name
@@ -27,11 +28,14 @@ fs.readdir(path.join(__dirname, 'components'), (err, files) => {
       if (err) throw err;
       else {
         component = data;
-        template = template.replaceAll(`\{\{${name}\}\}`, component)
-        fs.writeFile(path.join(__dirname, 'project-dist', 'index.html'), template, err => {
-          if (err) throw err;
-          console.log('index added')
-        })
+        template = template.replace(`\{\{${name}\}\}`, component)
+        if (--fileCount === 0) {
+          fs.writeFile(path.join(__dirname, 'project-dist', 'index.html'), template, err => {
+            if (err) throw err;
+            console.log('index added')
+          })
+        }
+
       }
   })
   }
