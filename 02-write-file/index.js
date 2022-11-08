@@ -13,6 +13,6 @@ stdin.on('data', data => {
 })
 
 process.on('SIGINT', () => {
-  stdout.write('bye')
+  stdout.write('\nbye')
   exit()
 });
